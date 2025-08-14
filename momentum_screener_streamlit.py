@@ -81,6 +81,11 @@ if run_button:
         df_results = pd.DataFrame(results)
         df_results.sort_values("Score", ascending=False, inplace=True)
         st.success(f"✅ 分析完成！共 {len(df_results)} 檔")
-        st.dataframe(df_results.style.background_gradient(cmap="RdYlGn", subset=["Score", "20d %", "60d %", "120d %"]))
+        try:
+        styled = df_results.style.background_gradient(cmap="RdYlGn", subset=["Score", "20d %", "60d %", "120d %"])
+        st.dataframe(styled, use_container_width=True)
+    except ImportError:
+        st.warning("⚠️ 偵測不到 matplotlib，已使用一般表格顯示。")
+        st.dataframe(df_results, use_container_width=True)
     else:
         st.warning("沒有符合條件的股票")
